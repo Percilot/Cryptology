@@ -90,15 +90,15 @@ class reflect{
 
 class enigma{
 	public:
-		void initialize(string ringsetting, string messagekey, string firstcodebook, string secondcodebook, string thirdcodebook, string plugboard)
+		void initialize(string ringsetting, string messagekey, int firstindex, int secondindex, int thirdindex, string plugboard)
 		{
 			const char* temp_messagekey;
 			const char* temp_ringsetting;
 			temp_messagekey = messagekey.data();
 			temp_ringsetting = ringsetting.data();
-			r3.initialize(3, temp_ringsetting[0], temp_messagekey[0], 'R', firstcodebook);
-			r2.initialize(2, temp_ringsetting[1], temp_messagekey[1], 'F', secondcodebook);
-			r1.initialize(1, temp_ringsetting[2], temp_messagekey[2], 'A', thirdcodebook);
+			r3.initialize(3, temp_ringsetting[0], temp_messagekey[0], step_char[firstindex - 1], rotor_table[firstindex - 1]);
+			r2.initialize(2, temp_ringsetting[1], temp_messagekey[1], step_char[secondindex - 1], rotor_table[secondindex - 1]);
+			r1.initialize(1, temp_ringsetting[2], temp_messagekey[2], step_char[thirdindex - 1], rotor_table[thirdindex - 1]);
 			p1.initialize(plugboard);
 			f1.initialize("YRUHQSLDPXNGOKMIEBFZCWVJAT");
 			return;
@@ -123,6 +123,22 @@ class enigma{
 		plugboard p1;
 		rotor r1, r2, r3;
 		reflect f1;	
+		char rotor_table[5][27] = 
+      	{
+
+         "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
+
+         "AJDKSIRUXBLHWTMCQGZNPYFVOE",
+
+         "BDFHJLCPRTXVZNYEIWGAKMUSQO",
+
+         "ESOVPZJAYQUIRHXLNFTGKDCMWB",
+
+         "VZBRGITYUPSDNHLXAWMJQOFECK"
+
+      	};
+
+    	char step_char[6] = "RFWKA";
 };
 
 string get_plugboard()
@@ -155,14 +171,22 @@ string get_plugboard()
 
 int main()
 {
+	int rotors[5];
 	char c;
 	enigma e1;
 	string messagekey, ringsetting;
 	string plugboard;
+
+	cout << "Enter plugborad:" << endl;
 	plugboard = get_plugboard();
+	cout << "Enter ringsetting:" << endl;
 	cin >> ringsetting;
+	cout << "Enter messagekey:" << endl;
 	cin >> messagekey;
-	e1.initialize(ringsetting, messagekey, "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "VZBRGITYUPSDNHLXAWMJQOFECK", plugboard);
+	cout << "Enter first rotor number:" << endl;
+	scanf("%d", &rotors[1]);
+
+	e1.initialize(ringsetting, messagekey, rotors[1], 2, 5, plugboard);
 	
 	while(1)
 	{
