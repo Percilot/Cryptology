@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include<stdio.h>
 using namespace std;
 
 class plugboard{
@@ -115,6 +116,7 @@ class enigma{
 			c = r2.negative_pass(c);
 			c = r1.negative_pass(c);
 			c = p1.transform(c);
+			return c;
 		}
 		
 	private:
@@ -123,14 +125,44 @@ class enigma{
 		reflect f1;	
 };
 
+string get_plugboard()
+{
+	int i;
+	char swap[10];
+	char temp[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	string result;
+	for(i = 0; i < 10; i++)
+	{
+		scanf("%s", &swap);
+		int j;
+		for(j = 0; j < 27; j++)
+		{
+			if(temp[j] == swap[0])
+			{
+				temp[j] = swap[1];
+				continue;
+			}
+			if(temp[j] == swap[1])
+			{
+				temp[j] = swap[0];
+				continue;
+			}
+		}
+	}
+	result = temp;
+	return result;
+}
+
 int main()
 {
 	char c;
 	enigma e1;
 	string messagekey, ringsetting;
+	string plugboard;
+	plugboard = get_plugboard();
 	cin >> ringsetting;
 	cin >> messagekey;
-	e1.initialize(ringsetting, messagekey, "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "VZBRGITYUPSDNHLXAWMJQOFECK", "AGDCRVBNUKJMLHPOQESYIFWXTZ");
+	e1.initialize(ringsetting, messagekey, "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "VZBRGITYUPSDNHLXAWMJQOFECK", plugboard);
 	
 	while(1)
 	{
